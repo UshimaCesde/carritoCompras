@@ -4,15 +4,15 @@ let cart = [];
 let products = [];
 
 // REFERENCIAR TODOS LOS ELEMENTOS DE
-/*
-let idprod = document.querySelector("#idprod"); */
+
 let idProd = document.getElementById("idprod");
 let prodName = document.querySelector("#prodname");
 let prodImage = document.getElementById("prodimage");
 let prodPrice = document.getElementById("prodprice");
 let prodStatus = document.getElementById("prodstatus");
 
-// además de los obvios tambien es necesario relacionar los botones
+// BOTONES
+
 let btnSave = document.getElementById("btnsave");
 let btnSearch = document.getElementById("btnsearch");
 let btnUpdate = document.getElementById("btnupdate");
@@ -20,7 +20,8 @@ let btnDelete = document.getElementById("btndelete");
 let message = document.getElementById("message");
 message.classList.add("d-none");
 
-//funcion para agregar productos al arreglo de objetos PRODUCTS
+//AGREGAR PRODUCTOS
+
 function addProduct(idprod, prodname, prodimage, prodprice, prodstatus) {
   message.classList.remove("d-none");
   let sprod = findProduct(idprod);
@@ -43,8 +44,17 @@ function addProduct(idprod, prodname, prodimage, prodprice, prodstatus) {
   }
 }
 
+function searchProduct(parametro) {
+  return products.filter((product) => {
+    for (const key in parametro) {
+      if (!product.hasOwnProperty(key) || product[key] !== parametro[key]) {
+        return false;
+      }
+    }
+    return true;
+  });
+}
 /*
-function searchProduct(idprod){}
 function updateProduct(idprod){}
 function deleteProduct(idprod){}
 */
@@ -62,7 +72,7 @@ btnSave.addEventListener("click", () => {
     prodName.value != "" &&
     prodImage.value != "" &&
     prodPrice.value != "" &&
-    prodstatus.value != ""
+    prodStatus.value != ""
   ) {
     addProduct(
       idProd.value,
@@ -71,30 +81,12 @@ btnSave.addEventListener("click", () => {
       prodPrice.value,
       prodStatus.value === "enable" ? true : false
     );
-
-    /*
-    let fprod = findProduct(idProd.value);
-    message.classList.remove("d-none");
-    if (!fprod){
-        products.push({idprod: idProd.value, prodname: prodName.value, prodimage: prodImage.value, prodprice: prodPrice.value, prodstatus: prodStatus.value === "enable" ? true :false})
-        console.log(products);
-        message.classList.remove("alert-danger")
-        message.classList.add("alert-success");
-        message.textContent = "Producto agregado exitosamente...";
-       
-         }else {
-        message.classList.remove("alert-success")
-        message.classList.add("alert-danger");
-        message.textContent = " El ID del producto ya existente. Inténtelo con otro...";
-   
-   
-    }
-
-
-    } */
   } else {
+    message.classList.remove("d-none");
     message.classList.remove("alert-success");
     message.classList.add("alert-danger");
     message.textContent = " Debe ingresar todos los datos...";
   }
 });
+
+btnSearch.addEventListener("click", () => {});

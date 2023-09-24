@@ -44,10 +44,10 @@ function addProduct(idprod, prodname, prodimage, prodprice, prodstatus) {
   }
 }
 
-function searchProduct(parametro) {
+function searchProduct(value) {
   return products.filter((product) => {
-    for (const key in parametro) {
-      if (!product.hasOwnProperty(key) || product[key] !== parametro[key]) {
+    for (const key in value) {
+      if (!product.hasOwnProperty(key) || product[key] !== value[key]) {
         return false;
       }
     }

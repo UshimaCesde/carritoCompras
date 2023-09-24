@@ -89,4 +89,21 @@ btnSave.addEventListener("click", () => {
   }
 });
 
-btnSearch.addEventListener("click", () => {});
+btnSearch.addEventListener("click", () => {
+  const id = idProd.value;
+  const name = prodName.value;
+  const image = prodImage.value;
+  const price = prodPrice.value;
+  const status = prodStatus.value === "enable" ? true : false;
+
+  let parametro = {};
+  if (id) parametro.idprod = id;
+  if (name) parametro.prodname = name;
+  if (image) parametro.prodimage = image;
+  if (price) parametro.prodprice = price;
+  if (status) parametro.prodstatus = status;
+
+  const results = searchProduct(parametro);
+
+  console.log(results);
+});

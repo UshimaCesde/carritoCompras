@@ -217,8 +217,22 @@ function searchProduct(value) {
   }
 }
 
+function updateProduct(idprod) {
+  //Buscar metodo splice() y metodo findindex
+  idProdUpdate = idProd.value;
+  if (idProdSearch === idProdUpdate) {
+    //Actualizar el producto con sus nuevos datos. No se cambia Idprod
+    let index = products.findIndex((prod) => prod.idprod === idProdSearch); //Esto devuelve la posicion en el arreglo del dato buscado
+    console.log(index);
+  } else {
+    //Buscar el idProdUpdate para mirar que ese idProd no esta asignado a otro producto
+    let sProd = findProduct(idProdUpdate);
+    if (!sProd) {
+      //Si no lo encuentra actualice el producto, inclusive el idprod
+    }
+  }
+}
 /*
-function updateProduct(idprod){}
 function deleteProduct(idprod){}
 */
 
@@ -275,15 +289,15 @@ btnSearch.addEventListener("click", () => {
   console.log(results);
 });
 
-//BOTON CREADO EN CLASE
-/*
-btnSearch.addEventListener('click',()=>{
-  searchProduct(idProd.value);
-})*/
+btnUpdate.addEventListener("click", () => {
+  updateProduct(idProd.value);
+});
 
 btnUpdate.addEventListener("click", () => {
   updateProduct(idProd.value);
 });
+
+/* TABLA */
 
 function displayTableResults(results) {
   let tableHTML = '<table class="table">'; // Aquí se define y se agrega la clase de Bootstrap

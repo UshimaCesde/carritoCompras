@@ -107,3 +107,13 @@ btnSearch.addEventListener("click", () => {
 
   console.log(results);
 });
+
+//BOTON CREADO EN CLASE
+/*
+btnSearch.addEventListener('click',()=>{
+  searchProduct(idProd.value);
+})*/
+
+btnUpdate.addEventListener("click", () => {
+  updateProduct(idProd.value);
+});

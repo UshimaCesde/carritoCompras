@@ -350,6 +350,9 @@ function searchProduct(value) {
     return true;
   });
   if (foundProducts.length > 0) {
+    document.getElementById("searchTitle").style.display = "block";
+    document.getElementById("btnupdate").style.display = "inline-block";
+    document.getElementById("btndelete").style.display = "inline-block";
     // Mostrar el primer producto encontrado en los campos
     const { idprod, prodname, prodimage, prodprice, prodstatus } =
       foundProducts[0];

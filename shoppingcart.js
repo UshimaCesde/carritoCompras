@@ -320,24 +320,35 @@ function addProduct(idprod, prodname, prodimage, prodprice, prodstatus) {
     message.classList.remove("alert-danger");
     message.classList.add("alert-success");
     message.textContent = "Producto Agregado Exitosamente";
+    setTimeout(() => {
+      message.textContent = "";
+      message.classList.add("d-none");
+    }, 3000);
   } else {
     message.classList.remove("alert-success");
     message.classList.add("alert-danger");
     message.textContent =
       " El ID del producto ya existente. Inténtelo con otro...";
+    setTimeout(() => {
+      message.textContent = "";
+      message.classList.add("d-none");
+    }, 3000);
   }
 }
 
 function searchProduct(value) {
   let foundProducts = products.filter((product) => {
     for (const key in value) {
-      if (!product.hasOwnProperty(key) || product[key] !== value[key]) {
+      if (key === "prodname" && value[key]) {
+        if (!product[key].toLowerCase().includes(value[key].toLowerCase())) {
+          return false;
+        }
+      } else if (value[key] && product[key] != value[key]) {
         return false;
       }
     }
     return true;
   });
-
   if (foundProducts.length > 0) {
     // Mostrar el primer producto encontrado en los campos
     const { idprod, prodname, prodimage, prodprice, prodstatus } =
@@ -353,11 +364,17 @@ function searchProduct(value) {
       displayTableResults(foundProducts.slice(1));
     }
   } else {
+    document.getElementById("searchTitle").style.display = "none";
     message.classList.remove("alert-success");
     message.classList.remove("d-none");
     message.classList.add("alert-danger");
     message.textContent = "Producto no encontrado. Inténtelo de nuevo.";
+    setTimeout(() => {
+      message.textContent = "";
+      message.classList.add("d-none");
+    }, 3000);
   }
+  console.log("Productos encontrados:", foundProducts);
 }
 
 function updateProduct(idprod) {
@@ -421,19 +438,13 @@ btnSearch.addEventListener("click", () => {
   const status = prodStatus.value === "enable" ? true : false;
 
   let parametro = {};
-  if (id) parametro.idprod = id;
+  if (id) parametro.idprod = String(id);
   if (name) parametro.prodname = name;
   if (image) parametro.prodimage = image;
   if (price) parametro.prodprice = price;
   if (status) parametro.prodstatus = status;
 
   const results = searchProduct(parametro);
-
-  console.log(results);
-});
-
-btnUpdate.addEventListener("click", () => {
-  updateProduct(idProd.value);
 });
 
 btnUpdate.addEventListener("click", () => {

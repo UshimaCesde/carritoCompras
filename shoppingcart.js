@@ -301,11 +301,11 @@ let btnSave = document.getElementById("btnsave");
 let btnSearch = document.getElementById("btnsearch");
 let btnUpdate = document.getElementById("btnupdate");
 let btnDelete = document.getElementById("btndelete");
+let btnClean = document.getElementById("btnclean");
 let message = document.getElementById("message");
 message.classList.add("d-none");
 
 //AGREGAR PRODUCTOS
-
 function addProduct(idprod, prodname, prodimage, prodprice, prodstatus) {
   message.classList.remove("d-none");
   let sprod = findProduct(idprod);
@@ -344,6 +344,7 @@ function searchProduct(value) {
           return false;
         }
       } else if (value[key] && product[key] != value[key]) {
+        idProdSearch = idProd.value;
         return false;
       }
     }
@@ -387,17 +388,77 @@ function updateProduct(idprod) {
     //Actualizar el producto con sus nuevos datos. No se cambia Idprod
     let index = products.findIndex((prod) => prod.idprod === idProdSearch); //Esto devuelve la posicion en el arreglo del dato buscado
     console.log(index);
+    products[index] = {
+      idprod: idProdSearch,
+      prodname: prodName.value,
+      prodimage: prodImage.value,
+      prodprice: prodPrice.value,
+      prodstatus: prodStatus.value === "enable" ? true : false,
+    };
+    message.classList.remove("alert-danger");
+    message.classList.remove("d-none");
+    message.classList.add("alert-success");
+    message.textContent = "Producto Actualizado Exitosamente";
+    setTimeout(() => {
+      message.textContent = "";
+      message.classList.add("d-none");
+    }, 3000);
   } else {
-    //Buscar el idProdUpdate para mirar que ese idProd no esta asignado a otro producto
-    let sProd = findProduct(idProdUpdate);
     if (!sProd) {
-      //Si no lo encuentra actualice el producto, inclusive el idprod
+      let sProd = findProduct(idProdUpdate);
+      let index = products.findIndex((prod) => prod.idprod === idProdSearch); //Esto devuelve la posicion en el arreglo del dato buscado
+      console.log(index);
+      products[index] = {
+        idprod: idProdUpdate,
+        prodname: prodName.value,
+        prodimage: prodImage.value,
+        prodprice: prodPrice.value,
+        prodstatus: prodStatus.value === "enable" ? true : false,
+      };
+      message.classList.remove("alert-danger");
+      message.classList.remove("d-none");
+      message.classList.add("alert-success");
+      message.textContent = "Producto Actualizado Exitosamente";
+      setTimeout(() => {
+        message.textContent = "";
+        message.classList.add("d-none");
+      }, 3000);
+    } else {
+      message.classList.remove("alert-success");
+      message.classList.remove("d-none");
+      message.classList.add("alert-danger");
+      message.textContent = "ID de producto ya se encuentra asignado";
+      setTimeout(() => {
+        message.textContent = "";
+        message.classList.add("d-none");
+      }, 3000);
     }
   }
 }
-/*
-function deleteProduct(idprod){}
-*/
+
+function dataClean() {
+  idProd.value = "";
+  prodName.value = "";
+  prodImage.value = "";
+  prodPrice.value = "";
+  prodStatus.value = "";
+  idProd.focus();
+}
+
+function deleteProduct(idprod) {
+  let index = products.findIndex((prod) => prod.idprod === idprod);
+  if (index != -1) {
+    if (confirm(`Estás seguro de eliminar el producto ${prodName.value} `)) {
+      products.splice(index, 1);
+      dataClean();
+    } else {
+      message.classList.remove("d-none");
+      message.removeClass("alert-success");
+      message.classList.add("alert-danger");
+      message.textContent = "ID de producto no existe... intente con otro";
+    }
+  }
+}
 
 function findProduct(idprod) {
   let fprod = products.find((prod) => prod.idprod === idprod);
@@ -452,6 +513,14 @@ btnSearch.addEventListener("click", () => {
 
 btnUpdate.addEventListener("click", () => {
   updateProduct(idProd.value);
+});
+
+btnClean.addEventListener("click", () => {
+  dataClean();
+});
+
+btnDelete.addEventListener("click", () => {
+  deleteProduct(idProd.value);
 });
 
 /* TABLA */
